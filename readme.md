@@ -5,5 +5,7 @@ Each folder contains [FDT](http://fdt.powerflasher.com "Powerlasher FDT") projec
 - - -
 Demo projects list:
 -------------------
-*	Weather App  
+*	[Hello World](./hello-world "Basic usage of Robotlegs 2 framework")  
+	This demo is just about basic usage of Robotlegs 2 framework.
+*	[Weather App](./weather-app "OpenWeatherMap API based weather application")  
 	In this demo you'll see how to write your own extensions. I tried to show it with [OpenWeatherMap API](http://www.openweathermap.com "OpenWeatherMap"), which will provide data from remote server.
