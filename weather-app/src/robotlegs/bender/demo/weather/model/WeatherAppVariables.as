@@ -19,29 +19,12 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package robotlegs.bender.demo.weather.model.appconfig {
-	import robotlegs.bender.demo.commands.InitStageOptions;
-	import robotlegs.bender.demo.commands.NullCommand;
-	import robotlegs.bender.demo.events.ApplicationEvent;
-	import robotlegs.bender.demo.weather.commands.hooks.CreateCityHash;
-	import robotlegs.bender.extensions.eventCommandMap.api.IEventCommandMap;
-
-	import flash.events.Event;
-
+package robotlegs.bender.demo.weather.model {
 	/**
 	 * @author Aziz Zaynutdinov (actionsmile at icloud.com)
 	 * @langversion Actionscript 3.0
 	 */
-	public class WeatherAppCommandMapping {
-		// App configuration file, which contains command mapping section
-		[Inject]
-		public var commandMap : IEventCommandMap;
-
-		[PostConstruct]
-		public function init() : void {
-			// after stage initialization, command map will automatically unmap this event
-			this.commandMap.map(Event.INIT).toCommand(InitStageOptions).once();
-			this.commandMap.map(ApplicationEvent.LAUNCH).toCommand(NullCommand).withHooks(CreateCityHash).once();
-		}
+	public class WeatherAppVariables {
+		public static const CITIES : String = "citiesHash";
 	}
 }

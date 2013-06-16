@@ -20,6 +20,8 @@
  * THE SOFTWARE.
  */
 package robotlegs.bender.demo.weather.model.appconfig {
+	import robotlegs.bender.demo.model.api.IApplicationModel;
+	import robotlegs.bender.demo.model.impl.ApplicationModel;
 	import robotlegs.bender.framework.api.IInjector;
 	
 	/**
@@ -33,6 +35,7 @@ package robotlegs.bender.demo.weather.model.appconfig {
 		
 		[PostConstruct]
 		public function init() : void {
+			this.injector.map(IApplicationModel).toSingleton(ApplicationModel);
 		}
 	}
 }

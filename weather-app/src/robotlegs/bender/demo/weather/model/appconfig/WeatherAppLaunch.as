@@ -20,6 +20,7 @@
  * THE SOFTWARE.
  */
 package robotlegs.bender.demo.weather.model.appconfig {
+	import flash.events.Event;
 	import robotlegs.bender.demo.events.ApplicationEvent;
 
 	import flash.events.IEventDispatcher;
@@ -33,6 +34,7 @@ package robotlegs.bender.demo.weather.model.appconfig {
 		
 		[PostConstruct]
 		public function init() : void {
+			this.dispacther.dispatchEvent(new Event(Event.INIT));
 			this.dispacther.dispatchEvent(new ApplicationEvent(ApplicationEvent.LAUNCH));
 			
 			// we don't it any more, so let GC collect this object

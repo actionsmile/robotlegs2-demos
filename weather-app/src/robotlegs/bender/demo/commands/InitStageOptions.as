@@ -19,29 +19,35 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package robotlegs.bender.demo.weather.model.appconfig {
-	import robotlegs.bender.demo.commands.InitStageOptions;
-	import robotlegs.bender.demo.commands.NullCommand;
-	import robotlegs.bender.demo.events.ApplicationEvent;
-	import robotlegs.bender.demo.weather.commands.hooks.CreateCityHash;
-	import robotlegs.bender.extensions.eventCommandMap.api.IEventCommandMap;
+package robotlegs.bender.demo.commands {
+	import robotlegs.bender.extensions.commandCenter.api.ICommand;
+	import robotlegs.bender.extensions.contextView.ContextView;
 
-	import flash.events.Event;
+	import flash.display.Stage;
+	import flash.display.StageAlign;
+	import flash.display.StageScaleMode;
 
 	/**
 	 * @author Aziz Zaynutdinov (actionsmile at icloud.com)
 	 * @langversion Actionscript 3.0
 	 */
-	public class WeatherAppCommandMapping {
-		// App configuration file, which contains command mapping section
+	public class InitStageOptions implements ICommand {
 		[Inject]
-		public var commandMap : IEventCommandMap;
+		public var contextView : ContextView;
+		
+		public function execute() : void {
+			var stage : Stage = this.contextView.view.stage;
+			stage.align = StageAlign.TOP_LEFT;
+			stage.scaleMode = StageScaleMode.NO_SCALE;
+			stage.frameRate = 60;
+			stage.showDefaultContextMenu = false;
+			
+			stage = null;
+			this.dispose();
+		}
 
-		[PostConstruct]
-		public function init() : void {
-			// after stage initialization, command map will automatically unmap this event
-			this.commandMap.map(Event.INIT).toCommand(InitStageOptions).once();
-			this.commandMap.map(ApplicationEvent.LAUNCH).toCommand(NullCommand).withHooks(CreateCityHash).once();
+		private function dispose() : void {
+			this.contextView = null;
 		}
 	}
 }
