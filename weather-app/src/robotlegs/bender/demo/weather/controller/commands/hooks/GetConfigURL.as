@@ -19,13 +19,13 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package robotlegs.bender.demo.weather.model.appconfig {
-	import robotlegs.bender.demo.weather.model.impl.WeatherServiceProvider;
-	import robotlegs.bender.demo.weather.model.api.IWeatherProvider;
+package robotlegs.bender.demo.weather.controller.commands.hooks {
 	import robotlegs.bender.demo.model.api.IApplicationModel;
-	import robotlegs.bender.demo.model.impl.ApplicationModel;
-	import robotlegs.bender.extensions.contextView.ContextView;
-	import robotlegs.bender.framework.api.IInjector;
+	import robotlegs.bender.demo.namespaces.offline;
+	import robotlegs.bender.demo.namespaces.online;
+	import robotlegs.bender.demo.utils.isLocal;
+	import robotlegs.bender.demo.weather.model.WeatherAppVariables;
+	import robotlegs.bender.framework.api.IHook;
 
 	import flash.display.Stage;
 
@@ -33,18 +33,27 @@ package robotlegs.bender.demo.weather.model.appconfig {
 	 * @author Aziz Zaynutdinov (actionsmile at icloud.com)
 	 * @langversion Actionscript 3.0
 	 */
-	public class WeatherAppInjections {
-		// App configuration file, which contains injection section
+	public class GetConfigURL implements IHook {
+		[Inject(name="applicationStage")]
+		public var stage : Stage;
 		[Inject]
-		public var injector : IInjector;
-		[Inject]
-		public var contextView : ContextView;
+		public var model : IApplicationModel;
+		
+		// configURL values, according launch mode
+		offline var configURL : String = "./../config/app.settings";
+		online var configURL : String = "";
 
-		[PostConstruct]
-		public function init() : void {
-			this.injector.map(Stage, "applicationStage").toValue(this.contextView.view.stage);
-			this.injector.map(IApplicationModel).toSingleton(ApplicationModel);
-			this.injector.map(IWeatherProvider).toSingleton(WeatherServiceProvider);
+		public function hook() : void {
+			var mode : Namespace = isLocal() ? offline : online;
+			online::configURL = this.stage.root.loaderInfo.parameters["config"];
+			this.model.setVariable(WeatherAppVariables.CONFIG_URL, mode::configURL);
+			
+			this.dispose();
+		}
+
+		private function dispose() : void {
+			this.model = null;
+			this.stage = null;
 		}
 	}
 }

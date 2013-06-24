@@ -28,6 +28,7 @@ package robotlegs.bender.demo.events {
 	 */
 	public class ApplicationEvent extends Event {
 		public static const LAUNCH : String = "applicationLaunch";
+		public static const READY : String = "applicationReadyToGo";
 		
 		public function ApplicationEvent(type : String, bubbles : Boolean = false, cancelable : Boolean = false) {
 			super(type, bubbles, cancelable);

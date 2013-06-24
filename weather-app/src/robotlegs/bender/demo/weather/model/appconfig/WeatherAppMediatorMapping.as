@@ -20,6 +20,9 @@
  * THE SOFTWARE.
  */
 package robotlegs.bender.demo.weather.model.appconfig {
+	import robotlegs.bender.demo.weather.controller.WeatherUIMediator;
+	import robotlegs.bender.demo.weather.view.api.IWeatherUI;
+	import robotlegs.bender.extensions.matching.TypeMatcher;
 	import robotlegs.bender.extensions.mediatorMap.api.IMediatorMap;
 	/**
 	 * @author Aziz Zaynutdinov (actionsmile at icloud.com)
@@ -32,6 +35,7 @@ package robotlegs.bender.demo.weather.model.appconfig {
 		
 		[PostConstruct]
 		public function init() : void {
+			this.mediatorMap.mapMatcher(new TypeMatcher().anyOf(IWeatherUI)).toMediator(WeatherUIMediator);
 		}
 	}
 }

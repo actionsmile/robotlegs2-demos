@@ -23,9 +23,14 @@ package robotlegs.bender.demo.weather.model.appconfig {
 	import robotlegs.bender.demo.commands.InitStageOptions;
 	import robotlegs.bender.demo.commands.NullCommand;
 	import robotlegs.bender.demo.events.ApplicationEvent;
-	import robotlegs.bender.demo.weather.commands.hooks.CreateCityHash;
+	import robotlegs.bender.demo.weather.controller.commands.AddUIElements;
+	import robotlegs.bender.demo.weather.controller.commands.LoadConfig;
+	import robotlegs.bender.demo.weather.controller.commands.guards.OnlyIfDataContainsGateway;
+	import robotlegs.bender.demo.weather.controller.commands.hooks.GetConfigURL;
+	import robotlegs.bender.demo.weather.controller.commands.hooks.InitWeatherService;
 	import robotlegs.bender.extensions.eventCommandMap.api.IEventCommandMap;
 
+	import flash.events.DataEvent;
 	import flash.events.Event;
 
 	/**
@@ -41,7 +46,9 @@ package robotlegs.bender.demo.weather.model.appconfig {
 		public function init() : void {
 			// after stage initialization, command map will automatically unmap this event
 			this.commandMap.map(Event.INIT).toCommand(InitStageOptions).once();
-			this.commandMap.map(ApplicationEvent.LAUNCH).toCommand(NullCommand).withHooks(CreateCityHash).once();
+			this.commandMap.map(ApplicationEvent.LAUNCH).toCommand(LoadConfig).withHooks(GetConfigURL).once();
+			this.commandMap.map(DataEvent.DATA, DataEvent).toCommand(NullCommand).withHooks(InitWeatherService).withGuards(OnlyIfDataContainsGateway).once();
+			this.commandMap.map(ApplicationEvent.READY).toCommand(AddUIElements).once();
 		}
 	}
 }

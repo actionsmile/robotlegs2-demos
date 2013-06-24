@@ -19,32 +19,40 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package robotlegs.bender.demo.weather.model.appconfig {
-	import robotlegs.bender.demo.weather.model.impl.WeatherServiceProvider;
-	import robotlegs.bender.demo.weather.model.api.IWeatherProvider;
-	import robotlegs.bender.demo.model.api.IApplicationModel;
-	import robotlegs.bender.demo.model.impl.ApplicationModel;
-	import robotlegs.bender.extensions.contextView.ContextView;
-	import robotlegs.bender.framework.api.IInjector;
+package robotlegs.bender.demo.weather.view.impl {
+	import robotlegs.bender.demo.weather.view.api.IWeatherUI;
 
-	import flash.display.Stage;
+	import flash.display.DisplayObject;
+	import flash.display.Sprite;
 
 	/**
 	 * @author Aziz Zaynutdinov (actionsmile at icloud.com)
 	 * @langversion Actionscript 3.0
 	 */
-	public class WeatherAppInjections {
-		// App configuration file, which contains injection section
-		[Inject]
-		public var injector : IInjector;
-		[Inject]
-		public var contextView : ContextView;
+	public class WeatherUI extends Sprite implements IWeatherUI {
+		/**
+		 * @private
+		 */
+		private var isCreated : Boolean;
 
-		[PostConstruct]
-		public function init() : void {
-			this.injector.map(Stage, "applicationStage").toValue(this.contextView.view.stage);
-			this.injector.map(IApplicationModel).toSingleton(ApplicationModel);
-			this.injector.map(IWeatherProvider).toSingleton(WeatherServiceProvider);
+		public function WeatherUI(autoCreate : Boolean = true) {
+			autoCreate && this.create();
+		}
+
+		public function create() : void {
+			if (!this.isCreated) {
+				this.isCreated = true;
+			}
+		}
+
+		public function dispose() : void {
+			if (this.isCreated) {
+				this.isCreated = false;
+			}
+		}
+
+		public function get view() : DisplayObject {
+			return this;
 		}
 	}
 }

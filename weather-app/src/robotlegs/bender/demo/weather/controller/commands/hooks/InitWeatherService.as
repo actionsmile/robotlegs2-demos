@@ -19,32 +19,32 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package robotlegs.bender.demo.weather.model.appconfig {
-	import robotlegs.bender.demo.weather.model.impl.WeatherServiceProvider;
+package robotlegs.bender.demo.weather.controller.commands.hooks {
 	import robotlegs.bender.demo.weather.model.api.IWeatherProvider;
-	import robotlegs.bender.demo.model.api.IApplicationModel;
-	import robotlegs.bender.demo.model.impl.ApplicationModel;
-	import robotlegs.bender.extensions.contextView.ContextView;
-	import robotlegs.bender.framework.api.IInjector;
+	import robotlegs.bender.framework.api.IHook;
 
-	import flash.display.Stage;
+	import flash.events.DataEvent;
 
 	/**
 	 * @author Aziz Zaynutdinov (actionsmile at icloud.com)
 	 * @langversion Actionscript 3.0
 	 */
-	public class WeatherAppInjections {
-		// App configuration file, which contains injection section
+	public class InitWeatherService implements IHook {
 		[Inject]
-		public var injector : IInjector;
+		public var service : IWeatherProvider;
 		[Inject]
-		public var contextView : ContextView;
+		public var event : DataEvent;
 
-		[PostConstruct]
-		public function init() : void {
-			this.injector.map(Stage, "applicationStage").toValue(this.contextView.view.stage);
-			this.injector.map(IApplicationModel).toSingleton(ApplicationModel);
-			this.injector.map(IWeatherProvider).toSingleton(WeatherServiceProvider);
+		public function hook() : void {
+			var config : Object = JSON.parse(this.event.data);
+			this.service.init(config);
+
+			this.dispose();
+		}
+
+		private function dispose() : void {
+			this.event = null;
+			this.service = null;
 		}
 	}
 }

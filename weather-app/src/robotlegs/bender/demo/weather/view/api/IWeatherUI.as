@@ -19,23 +19,17 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package robotlegs.bender.demo.weather.commands.hooks {
-	import flash.utils.Dictionary;
-	import robotlegs.bender.demo.weather.model.WeatherAppVariables;
-	import robotlegs.bender.demo.model.api.IApplicationModel;
-	import robotlegs.bender.framework.api.IHook;
-
+package robotlegs.bender.demo.weather.view.api {
+	import flash.display.DisplayObject;
 	/**
 	 * @author Aziz Zaynutdinov (actionsmile at icloud.com)
 	 * @langversion Actionscript 3.0
 	 */
-	public class CreateCityHash implements IHook {
-		[Inject]
-		public var model : IApplicationModel;
-		
-		public function hook() : void {
-			this.model.getVariable(WeatherAppVariables.CITIES) == undefined &&
-			this.model.setVariable(WeatherAppVariables.CITIES, new Dictionary());
-		}
+	public interface IWeatherUI {
+		function create() : void;
+
+		function dispose() : void;
+
+		function get view() : DisplayObject;
 	}
 }

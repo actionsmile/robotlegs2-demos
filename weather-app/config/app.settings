@@ -1,0 +1,18 @@
+{
+	"gateway":{
+		"protocol":"http",
+		"host":"api.openweathermap.org",
+		"address":"data/2.5"
+	},
+	"commands":{
+		"forecast":"forecast",
+		"weather":"weather",
+		"search":"find",
+		"query":"q"
+	},
+	"cities":[
+		"Moscow",
+		"New York",
+		"London"
+	]
+}

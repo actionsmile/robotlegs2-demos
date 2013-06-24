@@ -25,6 +25,7 @@ package robotlegs.bender.demo.weather.model {
 	 * @langversion Actionscript 3.0
 	 */
 	public class WeatherAppVariables {
+		public static const CONFIG_URL : String = "configURL";
 		public static const CITIES : String = "citiesHash";
 	}
 }

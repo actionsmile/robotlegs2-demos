@@ -19,32 +19,26 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package robotlegs.bender.demo.weather.model.appconfig {
-	import robotlegs.bender.demo.weather.model.impl.WeatherServiceProvider;
-	import robotlegs.bender.demo.weather.model.api.IWeatherProvider;
-	import robotlegs.bender.demo.model.api.IApplicationModel;
-	import robotlegs.bender.demo.model.impl.ApplicationModel;
-	import robotlegs.bender.extensions.contextView.ContextView;
-	import robotlegs.bender.framework.api.IInjector;
-
-	import flash.display.Stage;
-
+package robotlegs.bender.demo.weather.model.api {
 	/**
 	 * @author Aziz Zaynutdinov (actionsmile at icloud.com)
 	 * @langversion Actionscript 3.0
 	 */
-	public class WeatherAppInjections {
-		// App configuration file, which contains injection section
-		[Inject]
-		public var injector : IInjector;
-		[Inject]
-		public var contextView : ContextView;
+	public interface IWeatherProvider {
+		function init(config : Object) : void;
 
-		[PostConstruct]
-		public function init() : void {
-			this.injector.map(Stage, "applicationStage").toValue(this.contextView.view.stage);
-			this.injector.map(IApplicationModel).toSingleton(ApplicationModel);
-			this.injector.map(IWeatherProvider).toSingleton(WeatherServiceProvider);
-		}
+		function get gateway() : String;
+
+		function get commands() : Vector.<String>;
+
+		function get forecast() : String;
+
+		function get weather() : String;
+
+		function get search() : String;
+
+		function get query() : String;
+
+		function get cities() : Vector.<String>;
 	}
 }

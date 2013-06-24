@@ -19,32 +19,23 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package robotlegs.bender.demo.weather.model.appconfig {
-	import robotlegs.bender.demo.weather.model.impl.WeatherServiceProvider;
-	import robotlegs.bender.demo.weather.model.api.IWeatherProvider;
-	import robotlegs.bender.demo.model.api.IApplicationModel;
-	import robotlegs.bender.demo.model.impl.ApplicationModel;
+package robotlegs.bender.demo.weather.controller.commands {
+	import robotlegs.bender.demo.weather.view.api.IWeatherUI;
+	import robotlegs.bender.demo.weather.view.impl.WeatherUI;
+	import robotlegs.bender.extensions.commandCenter.api.ICommand;
 	import robotlegs.bender.extensions.contextView.ContextView;
-	import robotlegs.bender.framework.api.IInjector;
-
-	import flash.display.Stage;
 
 	/**
 	 * @author Aziz Zaynutdinov (actionsmile at icloud.com)
 	 * @langversion Actionscript 3.0
 	 */
-	public class WeatherAppInjections {
-		// App configuration file, which contains injection section
-		[Inject]
-		public var injector : IInjector;
+	public class AddUIElements implements ICommand {
 		[Inject]
 		public var contextView : ContextView;
 
-		[PostConstruct]
-		public function init() : void {
-			this.injector.map(Stage, "applicationStage").toValue(this.contextView.view.stage);
-			this.injector.map(IApplicationModel).toSingleton(ApplicationModel);
-			this.injector.map(IWeatherProvider).toSingleton(WeatherServiceProvider);
+		public function execute() : void {
+			var ui : IWeatherUI = new WeatherUI() ;
+			this.contextView.view.addChild(ui.view);
 		}
 	}
 }

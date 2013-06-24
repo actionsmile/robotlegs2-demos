@@ -19,32 +19,29 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package robotlegs.bender.demo.weather.model.appconfig {
-	import robotlegs.bender.demo.weather.model.impl.WeatherServiceProvider;
-	import robotlegs.bender.demo.weather.model.api.IWeatherProvider;
-	import robotlegs.bender.demo.model.api.IApplicationModel;
-	import robotlegs.bender.demo.model.impl.ApplicationModel;
-	import robotlegs.bender.extensions.contextView.ContextView;
-	import robotlegs.bender.framework.api.IInjector;
+package robotlegs.bender.demo.weather.controller.commands.guards {
+	import robotlegs.bender.framework.api.IGuard;
 
-	import flash.display.Stage;
+	import flash.events.DataEvent;
 
 	/**
 	 * @author Aziz Zaynutdinov (actionsmile at icloud.com)
 	 * @langversion Actionscript 3.0
 	 */
-	public class WeatherAppInjections {
-		// App configuration file, which contains injection section
+	public class OnlyIfDataContainsGateway implements IGuard {
 		[Inject]
-		public var injector : IInjector;
-		[Inject]
-		public var contextView : ContextView;
+		public var event : DataEvent;
 
-		[PostConstruct]
-		public function init() : void {
-			this.injector.map(Stage, "applicationStage").toValue(this.contextView.view.stage);
-			this.injector.map(IApplicationModel).toSingleton(ApplicationModel);
-			this.injector.map(IWeatherProvider).toSingleton(WeatherServiceProvider);
+		public function approve() : Boolean {
+			var json : Object = JSON.parse(this.event.data);
+			var result : Boolean = json["gateway"] != undefined;
+			json = null;
+			this.dispose();
+			return result;
+		}
+
+		private function dispose() : void {
+			this.event = null;
 		}
 	}
 }

@@ -19,32 +19,34 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package robotlegs.bender.demo.weather.model.appconfig {
-	import robotlegs.bender.demo.weather.model.impl.WeatherServiceProvider;
+package robotlegs.bender.demo.weather.controller {
 	import robotlegs.bender.demo.weather.model.api.IWeatherProvider;
-	import robotlegs.bender.demo.model.api.IApplicationModel;
-	import robotlegs.bender.demo.model.impl.ApplicationModel;
-	import robotlegs.bender.extensions.contextView.ContextView;
-	import robotlegs.bender.framework.api.IInjector;
-
-	import flash.display.Stage;
+	import robotlegs.bender.demo.weather.view.api.IWeatherUI;
+	import robotlegs.bender.extensions.mediatorMap.api.IMediator;
+	import robotlegs.bender.framework.api.ILogger;
 
 	/**
 	 * @author Aziz Zaynutdinov (actionsmile at icloud.com)
 	 * @langversion Actionscript 3.0
 	 */
-	public class WeatherAppInjections {
-		// App configuration file, which contains injection section
+	public class WeatherUIMediator implements IMediator {
 		[Inject]
-		public var injector : IInjector;
+		public var ui : IWeatherUI;
 		[Inject]
-		public var contextView : ContextView;
+		public var service : IWeatherProvider;
+		[Inject]
+		public var logger : ILogger;
 
-		[PostConstruct]
-		public function init() : void {
-			this.injector.map(Stage, "applicationStage").toValue(this.contextView.view.stage);
-			this.injector.map(IApplicationModel).toSingleton(ApplicationModel);
-			this.injector.map(IWeatherProvider).toSingleton(WeatherServiceProvider);
+		public function initialize() : void {
+			this.logger.info("Current gateway is {0}", [this.service.gateway]);
+		}
+
+		public function destroy() : void {
+			this.ui.dispose();
+			this.ui = null;
+
+			this.service = null;
+			this.logger = null;
 		}
 	}
 }
